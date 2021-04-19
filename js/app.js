@@ -38,6 +38,7 @@ for(const section of sections){
    const li = document.createElement("li");
    const anchor = document.createElement("a");
    anchor.setAttribute("href",`#${section.getAttribute("id")}`);
+   anchor.className = "menu__link";
    anchor.textContent = section.getAttribute("data-nav");
    li.appendChild(anchor);
    navListFragment.appendChild(li);
