@@ -94,7 +94,7 @@ section {
   border-radius: 0.25rem;
 }
 
-.navbar__menu .menu__link .is__active {
+.navbar__menu .menu__link.is__active {
   background: #333;
   color: #fff;
 }
