@@ -227,7 +227,7 @@ section:nth-of-type(3n + 1) .landing__container::after {
 /* ---- Theme State Rules ---- */
 /* Section Active Styles */
 /* Note: your-active-class class is applied through javascript. You should update the class here and in the index.html to what you set in your javascript file.  */
-section.is-active {
+section.is__active {
   background: rgb(0, 0, 0);
   background: linear-gradient(
     0deg,
@@ -236,12 +236,17 @@ section.is-active {
   );
 }
 
-section.is-active .landing__container::before {
+section.is__active h2 {
+  transition: all 0.4s ease-in-out;
+  transform: translateX(15px);
+}
+
+section.is__active .landing__container::before {
   opacity: 1;
   animation: rotate 4s linear 0s infinite forwards;
 }
 
-section.is-active .landing__container::after {
+section.is__active .landing__container::after {
   opacity: 1;
   animation: rotate 5s linear 0s infinite forwards reverse;
 }
