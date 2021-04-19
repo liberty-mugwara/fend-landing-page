@@ -26,24 +26,38 @@ const navListFragment = document.createDocumentFragment();
  *
  */
 
-// const getOffsetFromTop = (element) => element.getBoundingClientRect().top;
-// const isNearTopViewport = (element) => getOffsetFromTop(element) >= 50 && getOffsetFromTop(element) > 0;
-// const updateActiveSection = ()=>{
-//   for(const section of sections){
-//       if(isNearTopViewport(section)){
-//         //   get prev active section
-//         const prevActiveSection = document.querySelector(
-//             "main section.is__active"
-//           );
+const getOffsetFromTop = (element) => element.getBoundingClientRect().top;
+const isNearTopViewport = (element) =>
+  getOffsetFromTop(element) >= 50 && getOffsetFromTop(element) > 0;
+const updateActiveSection = () => {
+  for (const section of sections) {
+    if (isNearTopViewport(section)) {
+      //   get prev active section
+      const prevActiveSection = document.querySelector(
+        "main section.is__active"
+      );
 
-//           // deactivate prev active menu
-//           prevActiveSection && prevActiveSection.classList.remove("is__active");
+      // deactivate prev active menu
+      prevActiveSection && prevActiveSection.classList.remove("is__active");
 
-//           // activate the clicked link
-//           section.classList.add("is__active");
-//       }
-//   }
-// }
+      // activate the clicked link
+      section.classList.add("is__active");
+
+      // get previous active menu
+      const prevActiveMenu = document.querySelector(
+        ".navbar__menu .menu__link.is__active"
+      );
+
+      // deactivate prev active menu
+      prevActiveMenu && prevActiveMenu.classList.remove("is__active");
+
+      // activate linked menu
+      document
+        .querySelector(`a[href=${"#" + section.getAttribute("id")}]`)
+        .classList.add("is__active");
+    }
+  }
+};
 
 /**
  * End Helper Functions
