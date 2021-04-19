@@ -115,7 +115,3 @@ navList.addEventListener("click", (event) => {
 });
 
 document.addEventListener("scroll", updateActiveSection);
-
-// Build menu
-
-// Set sections as active
