@@ -27,8 +27,10 @@ const navListFragment = document.createDocumentFragment();
  */
 
 const getOffsetFromTop = (element) => element.getBoundingClientRect().top;
+
 const isNearTopViewport = (element) =>
   getOffsetFromTop(element) >= 50 && getOffsetFromTop(element) > 0;
+
 const updateActiveSection = () => {
   for (const section of sections) {
     if (isNearTopViewport(section)) {
