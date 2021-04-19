@@ -20,44 +20,33 @@
 const sections = document.querySelectorAll("main section");
 const navList = document.getElementById("navbar__list");
 const navListFragment = document.createDocumentFragment();
+
+// this might improve perfomance
+let activeMenu = undefined;
+let activeSection = undefined;
+
 /**
  * End Global Variables
  * Start Helper Functions
  *
  */
 
-const getOffsetFromTop = (element) => element.getBoundingClientRect().top;
+const isNearTopViewport = (element) => {
+  const rec = element.getBoundingClientRect();
+  const headerHeight = document.querySelector(".page__header").offsetHeight;
+  return rec.top <= headerHeight + 50 && rec.top >= 0 && rec.bottom > 100;
+};
 
-const isNearTopViewport = (element) =>
-  getOffsetFromTop(element) >= 50 && getOffsetFromTop(element) > 0;
+const activateMenu = (menu) => {
+  // get previous active menu
+  if (activateMenu !== menu) {
+    // deactivate prev active menu
+    activeMenu && activeMenu.classList.remove("is__active");
 
-const updateActiveSection = () => {
-  for (const section of sections) {
-    if (isNearTopViewport(section)) {
-      //   get prev active section
-      const prevActiveSection = document.querySelector(
-        "main section.is__active"
-      );
+    // activate menu
+    menu.classList.add("is__active");
 
-      // deactivate prev active menu
-      prevActiveSection && prevActiveSection.classList.remove("is__active");
-
-      // activate the clicked link
-      section.classList.add("is__active");
-
-      // get previous active menu
-      const prevActiveMenu = document.querySelector(
-        ".navbar__menu .menu__link.is__active"
-      );
-
-      // deactivate prev active menu
-      prevActiveMenu && prevActiveMenu.classList.remove("is__active");
-
-      // activate linked menu
-      document
-        .querySelector(`a[href=${"#" + section.getAttribute("id")}]`)
-        .classList.add("is__active");
-    }
+    activeMenu = menu;
   }
 };
 
@@ -82,26 +71,39 @@ for (const section of sections) {
 navList.appendChild(navListFragment);
 
 // Add class 'active' to section when near top of viewport
-// document.addEventListener("scroll", () => {
-//   setTimeout(() => {
-//     console.log(window.scrollY);
-//   }, 100);
-// });
+const updateActiveSection = () => {
+  for (const section of sections) {
+    if (isNearTopViewport(section)) {
+      if (activeSection !== section) {
+        // deactivate prev active menu
+        activeSection && activeSection.classList.remove("is__active");
+
+        // activate the section
+        section.classList.add("is__active");
+
+        activeSection = section;
+
+        const menuToActivate = document.querySelector(
+          `a[href="#${section.getAttribute("id")}"]`
+        );
+
+        activateMenu(menuToActivate);
+      }
+
+      return;
+    }
+  }
+};
+
+/**
+ * End Main Functions
+ * Begin Events
+ *
+ */
 
 // Scroll to anchor ID using scrollIntoView event
 navList.addEventListener("click", (event) => {
   event.preventDefault();
-
-  // get previous active menu
-  const prevActiveMenu = document.querySelector(
-    ".navbar__menu .menu__link.is__active"
-  );
-
-  // deactivate prev active menu
-  prevActiveMenu && prevActiveMenu.classList.remove("is__active");
-
-  // activate the clicked link
-  event.target.classList.add("is__active");
 
   // get linked section
   const section = document.getElementById(
@@ -112,11 +114,7 @@ navList.addEventListener("click", (event) => {
   section.scrollIntoView({ behavior: "smooth" });
 });
 
-/**
- * End Main Functions
- * Begin Events
- *
- */
+document.addEventListener("scroll", updateActiveSection);
 
 // Build menu
 
